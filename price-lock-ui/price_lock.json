@@ -1,0 +1,551 @@
+{
+  "version": "0.1.0",
+  "name": "price_lock",
+  "instructions": [
+    {
+      "name": "createNewLocker",
+      "docs": [
+        "Create new price locker"
+      ],
+      "accounts": [
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "lockerPda",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "lockerTokenAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "mint",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "associatedTokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "lockerName",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "depositNewFunds",
+      "docs": [
+        "Deposit to price locker"
+      ],
+      "accounts": [
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "authorityTokenAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "lockerPda",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "lockerTokenAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "mint",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "associatedTokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "lockerName",
+          "type": "string"
+        },
+        {
+          "name": "amount",
+          "type": "u32"
+        }
+      ]
+    },
+    {
+      "name": "priceLockFunds",
+      "accounts": [
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "authorityTokenAccount",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "lockerPda",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "lockerTokenAccount",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "mint",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "associatedTokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "lockerName",
+          "type": "string"
+        },
+        {
+          "name": "priceFeed",
+          "type": "publicKey"
+        },
+        {
+          "name": "strikePrice",
+          "type": "u32"
+        },
+        {
+          "name": "payoutAmount",
+          "type": "u32"
+        },
+        {
+          "name": "join",
+          "type": {
+            "option": "u8"
+          }
+        }
+      ]
+    },
+    {
+      "name": "timeLockFunds",
+      "accounts": [
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "authorityTokenAccount",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "lockerPda",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "lockerTokenAccount",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "mint",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "associatedTokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "lockerName",
+          "type": "string"
+        },
+        {
+          "name": "strikeTime",
+          "type": "u32"
+        },
+        {
+          "name": "payoutAmount",
+          "type": "u32"
+        },
+        {
+          "name": "join",
+          "type": {
+            "option": "u8"
+          }
+        }
+      ]
+    },
+    {
+      "name": "timeUnlockFunds",
+      "accounts": [
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "authorityTokenAccount",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "lockerPda",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "lockerTokenAccount",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "mint",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "associatedTokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "lockerName",
+          "type": "string"
+        },
+        {
+          "name": "lockIndex",
+          "type": "u8"
+        }
+      ]
+    },
+    {
+      "name": "withdrawUnlockedFunds",
+      "accounts": [
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "authorityTokenAccount",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "lockerPda",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "lockerTokenAccount",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "mint",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "associatedTokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "lockerName",
+          "type": "string"
+        },
+        {
+          "name": "amount",
+          "type": "u32"
+        }
+      ]
+    }
+  ],
+  "accounts": [
+    {
+      "name": "Locker",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "authority",
+            "type": "publicKey"
+          },
+          {
+            "name": "tokenMint",
+            "type": "publicKey"
+          },
+          {
+            "name": "creationTs",
+            "type": "u32"
+          },
+          {
+            "name": "lockedBalance",
+            "type": "u32"
+          },
+          {
+            "name": "locks",
+            "type": {
+              "vec": {
+                "defined": "Lock"
+              }
+            }
+          },
+          {
+            "name": "locked",
+            "type": "bool"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          },
+          {
+            "name": "name",
+            "type": "string"
+          }
+        ]
+      }
+    }
+  ],
+  "types": [
+    {
+      "name": "PythErrorCode",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Unauthorized"
+          },
+          {
+            "name": "ReInitialize"
+          },
+          {
+            "name": "UnInitialize"
+          },
+          {
+            "name": "InvalidArgument"
+          },
+          {
+            "name": "Overflow"
+          },
+          {
+            "name": "PythError"
+          },
+          {
+            "name": "PythOffline"
+          },
+          {
+            "name": "LoanValueTooHigh"
+          },
+          {
+            "name": "TryToSerializePriceAccount"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Lock",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "TimeLock",
+            "fields": [
+              {
+                "name": "id",
+                "type": "u8"
+              },
+              {
+                "name": "strikeTime",
+                "type": "u32"
+              },
+              {
+                "name": "amount",
+                "type": "u32"
+              },
+              {
+                "name": "locked",
+                "type": "bool"
+              },
+              {
+                "name": "join",
+                "type": {
+                  "option": "u8"
+                }
+              }
+            ]
+          },
+          {
+            "name": "PriceLock",
+            "fields": [
+              {
+                "name": "id",
+                "type": "u8"
+              },
+              {
+                "name": "strikePrice",
+                "type": "u32"
+              },
+              {
+                "name": "amount",
+                "type": "u32"
+              },
+              {
+                "name": "locked",
+                "type": "bool"
+              },
+              {
+                "name": "priceFeed",
+                "type": "publicKey"
+              },
+              {
+                "name": "join",
+                "type": {
+                  "option": "u8"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "PayoutAmountNotPositive",
+      "msg": "Payout amount should be more than 0"
+    },
+    {
+      "code": 6001,
+      "name": "NotAPriceLock",
+      "msg": "The found lock is not a price lock"
+    },
+    {
+      "code": 6002,
+      "name": "NoLockAtIndex",
+      "msg": "The lock does not exist on the index"
+    },
+    {
+      "code": 6003,
+      "name": "StrikePriceTooLow",
+      "msg": "Strike price is lower than the current token price"
+    },
+    {
+      "code": 6004,
+      "name": "TimeLowerThanStrikeTime",
+      "msg": "The current time has not exceeded the strike time"
+    },
+    {
+      "code": 6005,
+      "name": "NotATimeLock",
+      "msg": "The found lock is not a time lock"
+    },
+    {
+      "code": 6006,
+      "name": "PayoutAmountExceedsAvailableBalance",
+      "msg": "The payout amount exceeds the available balance"
+    },
+    {
+      "code": 6007,
+      "name": "PriceFeedNotMatchingPricefeedAccount",
+      "msg": "The pyth price feed account does not match the price feed in the lock."
+    }
+  ],
+  "metadata": {
+    "address": "BPVWMMj1eEALBvsR3TQZC2Zb3vt8jQkvzBYeJsoaKum7"
+  }
+}
