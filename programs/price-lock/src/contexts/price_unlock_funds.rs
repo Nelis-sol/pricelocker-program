@@ -5,8 +5,8 @@ use anchor_spl::token_interface::{Mint, TokenAccount, TokenInterface};
 
 const LAMPORTS_PER_SOL: u64 = 1_000_000_000;
 
-// Unlock funds when the strike_price (input earlier by the user) is hit
-// Uses the Pyth price oracle to determine current (SOL) price
+// Unlock funds when the strike_price (set by the user in price_lock_funds call) is hit
+// Uses the Pyth price oracle to determine current token price
 #[derive(Accounts)]
 #[instruction(index: u8, locker_name: String)]
 pub struct PriceUnlockFunds<'info> {
@@ -30,6 +30,7 @@ pub struct PriceUnlockFunds<'info> {
     )]
     pub locker_token_account: InterfaceAccount<'info, TokenAccount>,
     pub mint: InterfaceAccount<'info, Mint>,
+    // Check if the account is owned by the pyth oracle program
     #[account(owner = pyth_solana_receiver_sdk::ID)]
     pub pyth_price_update_account: Account<'info, PriceUpdateV2>,
     #[account(address = system_program::ID)]
@@ -40,9 +41,6 @@ pub struct PriceUnlockFunds<'info> {
 
 impl<'info> PriceUnlockFunds<'_> {
     pub fn process(&mut self, lock_index: u8) -> Result<()> {
-
-        msg!("price_unlock_funds");
-
         let Self {ref mut locker_pda, pyth_price_update_account,..} = self;
 
         // Users can choose whether they want to unlock all unlockable funds,or just a specific one
@@ -81,6 +79,44 @@ impl<'info> PriceUnlockFunds<'_> {
 }
 
 
+
+// Open up locks of which the current price is larger than the strike_price stated in the lock (as earlier defined by the user)
+fn process_price_lock<'info>(lock_item: &mut Lock, pyth_solprice_account: &mut Account<'info, PriceUpdateV2>) -> Result<()> {
+
+    // Check if lock is a price lock, and if so access the values 
+    if let Lock::PriceLock {  strike_price, locked, price_feed, .. } = lock_item {
+
+        // Check if the price_feed set in the locker_pda matches the price_feed in the pyth_solprice_account
+        // If not equal, user is trying to unlock funds using a pricefeed of a different token
+        if *price_feed != pyth_solprice_account.key() {
+            return Err(LockerErrorCode::PriceFeedNotMatchingPricefeedAccount.into());
+        }
+
+        // Normalize amount to account for the decimals of the token (using the Pyth exponent)
+        let amount_in_lamports = LAMPORTS_PER_SOL
+            .checked_mul(10_u64.pow(pyth_solprice_account.price_message.exponent.abs().try_into().unwrap()))
+            .unwrap()
+            .checked_div(pyth_solprice_account.price_message.price.try_into().unwrap())
+            .unwrap();
+
+        // Check if the price of the token exceeds the strike_price defined in the locker
+        if amount_in_lamports >= *strike_price as u64 {
+            // asset price exceeds strike_price so unlock the lock
+            *locked = false;
+            Ok(())
+        } else {
+            Err(LockerErrorCode::StrikePriceTooLow.into())
+        }
+    } else {
+        Err(LockerErrorCode::NotAPriceLock.into())
+    }
+}
+
+
+
+
+// COMMENTED OUT AS ITS DEPRECIATED BY THE NEW PYTH SOLANA RECEIVER SDK
+
 // // Retrieve price from Pyth pricefeed for comparison with strike price
 // fn get_price_from_pricefeed<'info>(pyth_price_update_account: &mut Account<'info, PriceUpdateV2>) -> Result<u32> {
 
@@ -98,39 +134,4 @@ impl<'info> PriceUnlockFunds<'_> {
 
 //     Ok(price)
 // }
-
-// Open up locks of which the current price is larger than the strike_price stated in the lock (as earlier defined by the user)
-fn process_price_lock<'info>(lock_item: &mut Lock, pyth_solprice_account: &mut Account<'info, PriceUpdateV2>) -> Result<()> {
-
-    // Check if lock is a price lock, and if so access the values 
-    if let Lock::PriceLock {  strike_price, locked, price_feed, .. } = lock_item {
-
-        if *price_feed != pyth_solprice_account.key() {
-            return Err(LockerErrorCode::PriceFeedNotMatchingPricefeedAccount.into());
-        }
-
-        msg!("pyth_price: {}", pyth_solprice_account.price_message.price);
-        msg!("strike_price: {}", strike_price);
-
-        let amount_in_lamports = LAMPORTS_PER_SOL
-            .checked_mul(10_u64.pow(pyth_solprice_account.price_message.exponent.abs().try_into().unwrap()))
-            .unwrap()
-            .checked_div(pyth_solprice_account.price_message.price.try_into().unwrap())
-            .unwrap();
-
-        msg!("amount in lamports: {}", amount_in_lamports);
-
-        // Check if the price of the asset exceeds the strike_price defined in the locker
-        if amount_in_lamports >= *strike_price as u64 {
-            // asset price exceeds strike_price so unlock the lock
-            *locked = false;
-            Ok(())
-        } else {
-            Err(LockerErrorCode::StrikePriceTooLow.into())
-        }
-    } else {
-        Err(LockerErrorCode::NotAPriceLock.into())
-    }
-}
-
 

@@ -4,7 +4,7 @@ use anchor_spl::token_interface::{Mint, TokenAccount, TokenInterface};
 
 
 // Add a price lock to the locker
-// This will ensure the user can not access the funds before the given date (timestamp)
+// This will ensure the user can not access the funds until the price of the token is above the set strike price
 #[derive(Accounts)]
 #[instruction(locker_name: String, price_feed: Pubkey)]
 pub struct PriceLockFunds<'info> {
@@ -37,14 +37,13 @@ impl<'info> PriceLockFunds<'_> {
     pub fn process(&mut self, price_feed: Pubkey, strike_price: u32, amount: u32, join: Option<u8>) -> Result<()> {
         let Self {locker_pda, locker_token_account, ..} = self;
 
-        // Check if the payout amount is more than 0, otherwise the lock is not locking any funds
+        // Check if the amount to lock up is more than 0, otherwise the lock is not locking any funds
         require!((amount > 0), LockerErrorCode::PayoutAmountNotPositive);
-
 
         // Get total balance of the locker
         let mut available_balance = locker_token_account.amount;
 
-        // Iterator through locks to subtract the locked amounts from the available balance
+        // Iterate through locks to subtract the locked amounts from the available balance
         // When user has 0 locks yet, the available balance will equal the total balance
         // With every lock, funds are locked and not available for a new lock
         for lock_item in &locker_pda.locks {  
@@ -57,8 +56,7 @@ impl<'info> PriceLockFunds<'_> {
         // Check if the amount the user wants to lock is equal or lower than the available balance
         require!(((amount as u64) <= available_balance), LockerErrorCode::PayoutAmountExceedsAvailableBalance);
 
-
-
+        // Get the next lock id (.len() is the index of the next lock, as index 0 is the first lock)
         let lock_id: u8 = locker_pda.locks.len() as u8;
 
         // Construct the new price lock object 
@@ -73,12 +71,10 @@ impl<'info> PriceLockFunds<'_> {
             join: join,
         };
 
-        // Add price lock to the locker vector
+        // Add price lock to the locker vector in the locker pda
         locker_pda.locks.push(new_price_lock);
         
-
         // Update the locked and unlocked balance
-        // locker.unlocked_balance -= payout_amount;
         locker_pda.locked_balance += amount;
 
         Ok(())
@@ -99,12 +95,11 @@ fn get_price_locked_balance<'info>(lock_item: &Lock) -> u64 {
                 return locked_balance
 
         } else {
-            // the price lock is not for the token mint we are looking for - or lock is unlocked
+            // the price lock is unlocked, so the locked amount is 0
             return 0;
         }
     } else {
         // Lock is not a Price lock
-        // Adding >2 price locks on the same balance is not allowed, but combining a price lock and a time lock is allowed
         return 0;
     }
 }

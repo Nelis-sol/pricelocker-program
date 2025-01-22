@@ -3,6 +3,7 @@ use anchor_spl::associated_token::AssociatedToken;
 use anchor_spl::token_interface::{Mint, TokenAccount, TokenInterface};
 
 
+// Deposit funds to the locker_token_account, of which the locker_pda is the authority
 #[derive(Accounts)]
 #[instruction(locker_name: String)]
 pub struct DepositNewFunds<'info> {

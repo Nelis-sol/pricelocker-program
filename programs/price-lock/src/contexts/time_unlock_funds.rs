@@ -48,8 +48,8 @@ impl<'info> TimeUnlockFunds<'_> {
                     let clock: Clock = Clock::get().unwrap();
                     let time_now = clock.unix_timestamp as u32;
 
-                    // Check if price lock can be openend (asset price exceeds strike price)
-                    // Unlock locker if true
+                    // Check if time lock can be openend (current time exceeds strike time)
+                    // Unlocks locker if true
                     process_time_lock(lock_item, time_now).unwrap();
                 }
             },
@@ -60,13 +60,13 @@ impl<'info> TimeUnlockFunds<'_> {
                 let clock: Clock = Clock::get().unwrap();
                 let time_now = clock.unix_timestamp as u32;
 
-                // Retrieves price lock from locks vector by the index
+                // Retrieves time lock from locks vector by the index
                 let lock_item = locker_pda.locks
                     .get_mut(index as usize)
                     .ok_or(LockerErrorCode::NoLockAtIndex)
                     .unwrap();
 
-                // Check if price lock can be openend (asset price exceeds strike price)
+                // Check if time lock can be openend (current time exceeds strike time)
                 // Unlock locker if true
                 process_time_lock(lock_item, time_now).unwrap();
 
@@ -79,10 +79,10 @@ impl<'info> TimeUnlockFunds<'_> {
 }            
 
 
-// Open up locks of which the current price is larger than the strike_price stated in the lock (as earlier defined by the user)
+// Open up locks of which the current timestamp is larger than the strike_time stated in the lock (as earlier defined by the user)
 fn process_time_lock<'info>(lock_item: &mut Lock, time_now: u32) -> Result<()> {
 
-    // Check if lock is a price lock, and if so access the values 
+    // Check if lock is a time lock, and if so access the values 
     if let Lock::TimeLock { strike_time, locked, .. } = lock_item {
         // Check if the current time exceeds the strike_time defined in the locker
         if time_now >= *strike_time {

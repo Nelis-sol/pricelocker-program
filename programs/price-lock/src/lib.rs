@@ -17,7 +17,7 @@ pub mod price_lock {
 
     use super::*;
 
-    /// Create new price locker
+    // Create new price locker
     pub fn create_new_locker(
         ctx: Context<CreateNewLocker>,
         locker_name: String,
@@ -26,7 +26,7 @@ pub mod price_lock {
         ctx.accounts.process(locker_name, bump)
     }
 
-    /// Deposit to price locker
+    // Deposit to price locker
     pub fn deposit_new_funds(
         ctx: Context<DepositNewFunds>,
         locker_name: String,
@@ -36,6 +36,7 @@ pub mod price_lock {
         ctx.accounts.process(transfer_amount)
     }
 
+    // Add a price lock to the locker
     pub fn price_lock_funds(
         ctx: Context<PriceLockFunds>,
         locker_name: String,
@@ -48,6 +49,7 @@ pub mod price_lock {
             .process(price_feed, strike_price, payout_amount, join)
     }
 
+    // Add a time lock to the locker
     pub fn time_lock_funds(
         ctx: Context<TimeLockFunds>,
         locker_name: String,
@@ -59,7 +61,7 @@ pub mod price_lock {
             .process(strike_time, payout_amount, join)
     }
 
-    // /// Withdraw from price locker
+    // Unlock a time lock
     pub fn time_unlock_funds(
         ctx: Context<TimeUnlockFunds>, 
         locker_name: String,
@@ -67,6 +69,7 @@ pub mod price_lock {
         ctx.accounts.process(lock_index)
     }
 
+    // Unlock a price lock
     pub fn price_unlock_funds(
         ctx: Context<PriceUnlockFunds>, 
         lock_index: u8,
@@ -75,6 +78,7 @@ pub mod price_lock {
         ctx.accounts.process(lock_index)
     }
 
+    // Withdraw funds from the locker
     pub fn withdraw_unlocked_funds(
         ctx: Context<WithdrawUnlockedFunds>,
         locker_name: String,

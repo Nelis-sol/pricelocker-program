@@ -3,7 +3,8 @@ use anchor_spl::associated_token::AssociatedToken;
 use anchor_spl::token_interface::{Mint, TokenAccount, TokenInterface};
 
 
-// Withdraw funds from the locker, for now only SOL - later SPL tokens are added
+// Withdraw funds from the locker
+// Only tokens that are not locked by a price or time lock can be withdrawn
 #[derive(Accounts)]
 #[instruction(locker_name: String)]
 pub struct WithdrawUnlockedFunds<'info> {
@@ -38,23 +39,21 @@ impl<'info> WithdrawUnlockedFunds<'_> {
     pub fn process(&mut self, amount: u64, locker_name: String) -> Result<()> {
         let Self { authority, locker_pda, locker_token_account, token_program, authority_token_account, .. } = self;
 
-        // assert!(amount <= locker.unlocked_balance, "Insufficient unlocked balance");
+        // Check if the authority is the same as the authority of the locker
+        // Already checked in the instruction using the Anchor macro, but we do it again here for safety
         assert!(authority.key() == locker_pda.authority, "Signer not authorized");
 
         // Check if the payout amount is more than 0, otherwise the lock is not locking any funds
         require!((amount > 0), LockerErrorCode::PayoutAmountNotPositive);
 
-        
         // Get total balance of the locker
         let available_balance = locker_token_account.amount;
-
 
         // Initiate locked_balance which we will fill when we find locked locks
         let mut locked_balance = 0;
 
-        // Joined locks is a HashSet to find locks that are join together (join = id of another lock)
+        // Joined locks is a HashSet to find locks that are joined together (join = id of another lock)
         let mut joined_locks = HashSet::new();
-
 
         // Iterator through locks to subtract the locked amounts from the available balance
         // When user has 0 locks yet, the available balance will equal the total balance
@@ -96,6 +95,7 @@ impl<'info> WithdrawUnlockedFunds<'_> {
 
         let authority_key = authority.key();
 
+        // Get the seeds for the authority (the locker_pda) of the token account
         let seeds = &[
             b"locker".as_ref(),
             authority_key.as_ref(),
@@ -103,6 +103,7 @@ impl<'info> WithdrawUnlockedFunds<'_> {
             &[locker_pda.bump],
         ];
 
+        // Transfer tokens out of the locker to the authority/user
         anchor_spl::token::transfer(
             CpiContext::new_with_signer(
                 token_program.to_account_info(),
