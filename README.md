@@ -18,6 +18,12 @@ The goal of the pricelocker is aligning incentives between project teams, influe
 
 <br />
 
+## Devnet and published IDL
+This program is deployed on Solana devnet with program id: `BPVWMMj1eEALBvsR3TQZC2Zb3vt8jQkvzBYeJsoaKum7`.
+The IDL is published onchain:
+[Solscan - Devnet]([https://github.com/Nelis-sol/gamecall/blob/main/gamecall-why-dot-fun-video-demo.mp4](https://solscan.io/account/BPVWMMj1eEALBvsR3TQZC2Zb3vt8jQkvzBYeJsoaKum7?cluster=devnet#anchorProgramIdl))
+
+
 ## Built with
 
 - [x] **Rust**
@@ -67,6 +73,7 @@ $ npm i
 $ cd price-locker-ui
 $ npm i
 ```
+<br />
 
 ### 5. Run UI
 ```
