@@ -1,6 +1,6 @@
 # About the project
 
-![alt text]([https://github.com/Nelis-sol/gamecall/blob/main/gamecall-why-dot-fun.png](https://github.com/Nelis-sol/pricelocker-program/blob/main/pricelocker.png) "Pricelocker logo")
+![alt text]([https://github.com/Nelis-sol/pricelocker-program/blob/main/pricelocker.png](https://github.com/Nelis-sol/pricelocker-program/blob/main/pricelocker.png) "Pricelocker logo")
 
 
 ## Pricelocker
