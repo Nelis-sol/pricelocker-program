@@ -1,5 +1,6 @@
 # About the project
 
+![alt text]([https://github.com/Nelis-sol/gamecall/blob/main/gamecall-why-dot-fun.png](https://github.com/Nelis-sol/pricelocker-program/blob/main/pricelocker.png) "Pricelocker logo")
 
 
 ## Pricelocker
@@ -22,6 +23,7 @@ The goal of the pricelocker is aligning incentives between project teams, influe
 - [x] **Rust**
 - [x] **Anchor**  
 - [x] **Pyth** (https://pyth.network)
+- [x] **React**
 
 <br />
 
