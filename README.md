@@ -7,13 +7,13 @@ With pricelocker, users can lock up their tokens until they reach a certain pric
 The goal of the pricelocker is aligning incentives between project teams, influencers, developers, AI agents and the community. Only when one driven value to the token price, can their tokens be unlocked.winning callers). This includes prompting the AI agent and instructing it on how to judge winning and losing attempts. Gamecall also allows calls through the browser.
 
 **Functionalities of the pricelocker:**:
-  * create locker (creates PDA and a token account that will serve as the vault for the tokens)
-  * deposit funds (deposit a token that you want to lock up)
-  * create price lock (determine the price at which the tokens unlock)
-  * create time lock (instead of a price lock, users can also choose for a time lock - or do both: e.g. unlock at X price AND after 3 months)
-  * unlock price lock (unlock tokens)
-  * unlock time lock (unlock tokens)
-  * withdraw funds (withdraw unlocked funds from the locker to the user wallet)
+  * **create locker** (creates PDA and a token account that will serve as the vault for the tokens)
+  * **deposit funds** (deposit a token that you want to lock up)
+  * **create price lock** (determine the price at which the tokens unlock)
+  * **create time lock** (instead of a price lock, users can also choose for a time lock - or do both: e.g. unlock at X price AND after 3 months)
+  * **unlock price lock** (unlock tokens)
+  * **unlock time lock** (unlock tokens)
+  * **withdraw funds** (withdraw unlocked funds from the locker to the user wallet)
 
 <br />
 
