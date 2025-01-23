@@ -19,9 +19,9 @@ The goal of the pricelocker is aligning incentives between project teams, influe
 <br />
 
 ## Devnet and published IDL
-This program is deployed on Solana devnet with program id: `BPVWMMj1eEALBvsR3TQZC2Zb3vt8jQkvzBYeJsoaKum7`.<br />
+This program is deployed on Solana devnet with program id: `BPVWMMj1eEALBvsR3TQZC2Zb3vt8jQkvzBYeJsoaKum7`.<br /><br />
 The IDL is published onchain:
-[Solscan - Devnet]([https://solscan.io/account/BPVWMMj1eEALBvsR3TQZC2Zb3vt8jQkvzBYeJsoaKum7?cluster=devnet#anchorProgramIdl](https://solscan.io/account/BPVWMMj1eEALBvsR3TQZC2Zb3vt8jQkvzBYeJsoaKum7?cluster=devnet#anchorProgramIdl))
+https://solscan.io/account/BPVWMMj1eEALBvsR3TQZC2Zb3vt8jQkvzBYeJsoaKum7?cluster=devnet#anchorProgramIdl
 
 <br />
 
