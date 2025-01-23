@@ -7,7 +7,7 @@
 With pricelocker, users can lock up their tokens until they reach a certain price. Once the token price exceeds the price set on the locker, the tokens get unlocked and can be withdrawn. 
 The goal of the pricelocker is aligning incentives between project teams, influencers, developers, AI agents and the community. Only when one driven value to the token price, can their tokens be unlocked.winning callers). This includes prompting the AI agent and instructing it on how to judge winning and losing attempts. Gamecall also allows calls through the browser.
 
-**Functionalities of the pricelocker:**:
+**Functionalities of the pricelocker:**
   * **create locker** (creates PDA and a token account that will serve as the vault for the tokens)
   * **deposit funds** (deposit a token that you want to lock up)
   * **create price lock** (determine the price at which the tokens unlock)
@@ -51,7 +51,27 @@ $ cargo install --git https://github.com/coral-xyz/anchor avm --locked --force
 $ avm install 0.29.0
 $ avm use 0.29.0
 ```
+<br />
 
+### 3. Deploy program on devnet
+Update the program id if necessary (in the `lib.rs` and `anchor.toml` files).
+
+```
+$ cd price-locker-ui
+$ npm i
+```
+<br />
+
+### 4. Install npm dependencies
+```
+$ cd price-locker-ui
+$ npm i
+```
+
+### 5. Run UI
+```
+$ npm run dev
+```
 
 <br />
 
