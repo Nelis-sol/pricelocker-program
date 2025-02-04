@@ -1,6 +1,6 @@
 # About the project
 
-![alt text](https://github.com/Nelis-sol/pricelocker-program/blob/main/pricelocker.png "Why.fun logo")
+![alt text](https://github.com/Nelis-sol/pricelocker-program/blob/main/pricelocker.png "Pricelocker")
 
 
 ## Pricelocker
