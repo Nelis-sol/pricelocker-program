@@ -64,8 +64,8 @@ $ avm use 0.29.0
 Update the program id if necessary (in the `lib.rs` and `anchor.toml` files).
 
 ```
-$ cd price-locker-ui
-$ npm i
+$ anchor build
+$ anchor deploy
 ```
 <br />
 
